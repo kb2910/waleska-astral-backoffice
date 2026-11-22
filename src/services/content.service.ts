@@ -17,6 +17,9 @@ export interface ContentSection {
   footerNavLinks?: { label: string; sectionId: string }[];
   slogan?: string;
   copyrightText?: string;
+  navigationTitle?: string;
+  contactTitle?: string;
+  contactEmail?: string;
   isActive: boolean;
   sortOrder: number;
   createdAt: string;

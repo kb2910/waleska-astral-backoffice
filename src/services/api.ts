@@ -8,6 +8,22 @@ api.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
+  // La API usa whitelist + forbidNonWhitelisted: estos campos de solo lectura
+  // generan un 400 si se envían en el body de create/update.
+  const method = config.method?.toLowerCase();
+  if (
+    (method === 'post' || method === 'patch' || method === 'put') &&
+    config.data &&
+    typeof config.data === 'object' &&
+    !Array.isArray(config.data) &&
+    !(config.data instanceof FormData)
+  ) {
+    const { id, createdAt, updatedAt, created_at, updated_at, deleted_at, ...cleanBody } = config.data as Record<string, unknown>;
+    void id; void createdAt; void updatedAt; void created_at; void updated_at; void deleted_at;
+    config.data = cleanBody;
+  }
+
   return config;
 });
 

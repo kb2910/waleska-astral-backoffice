@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import bookingService, { type Booking } from '../services/booking.service';
+import { getRouteMessage } from '../hooks/useEntityForm';
 import './CrudPages.css';
 
 type StatusFilter = 'all' | 'pending' | 'confirmed' | 'completed' | 'cancelled';
 
 export default function Bookings() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [items, setItems] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<StatusFilter>('all');
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(getRouteMessage(location));
 
   const load = async () => {
     setLoading(true);
@@ -90,21 +94,22 @@ export default function Bookings() {
       {loading ? (
         <div className="text-center py-4"><i className="fas fa-spinner fa-spin fa-2x" style={{ color: '#7122d0' }} /></div>
       ) : (
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>{t('Backoffice.ID')}</th>
-              <th>{t('Backoffice.Client')}</th>
-              <th>{t('Backoffice.Email')}</th>
-              <th>{t('Backoffice.Service')}</th>
-              <th>{t('Backoffice.Date')}</th>
-              <th>{t('Backoffice.Time')}</th>
-              <th>{t('Backoffice.Status')}</th>
-              <th>{t('Backoffice.Actions')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map(item => (
+        <div className="table-responsive">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>{t('Backoffice.ID')}</th>
+                <th>{t('Backoffice.Client')}</th>
+                <th>{t('Backoffice.Email')}</th>
+                <th>{t('Backoffice.Service')}</th>
+                <th>{t('Backoffice.Date')}</th>
+                <th>{t('Backoffice.Time')}</th>
+                <th>{t('Backoffice.Status')}</th>
+                <th>{t('Backoffice.Actions')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map(item => (
               <tr key={item.id}>
                 <td>{item.id}</td>
                 <td>{item.clientName}</td>
@@ -118,6 +123,9 @@ export default function Bookings() {
                   </span>
                 </td>
                 <td className="actions-cell">
+                  <button className="btn btn-sm btn-outline-primary" title={t('Backoffice.Edit')} onClick={() => navigate(`/bookings/${item.id}/edit`)}>
+                    <i className="fas fa-edit" />
+                  </button>
                   {item.status === 'pending' && (
                     <button className="btn btn-sm btn-outline-success" onClick={() => updateStatus(item.id, 'confirmed')}>
                       <i className="fas fa-check" /> {t('Backoffice.Confirm')}
@@ -139,9 +147,10 @@ export default function Bookings() {
                 </td>
               </tr>
             ))}
-            {filtered.length === 0 && <tr><td colSpan={8} className="text-center text-muted">{t('Backoffice.NoBookings')}</td></tr>}
-          </tbody>
-        </table>
+              {filtered.length === 0 && <tr><td colSpan={8} className="text-center text-muted">{t('Backoffice.NoBookings')}</td></tr>}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

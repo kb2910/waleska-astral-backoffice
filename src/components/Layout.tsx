@@ -1,5 +1,5 @@
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -9,13 +9,14 @@ const NAV_ITEMS = [
   { labelKey: 'Backoffice.Dashboard', icon: 'fas fa-tachometer-alt', route: '/', keywords: 'dashboard panel inicio home' },
   { labelKey: 'Backoffice.Content', icon: 'fas fa-file-alt', route: '/content', keywords: 'content contenido texto banner about header footer' },
   { labelKey: 'Backoffice.Services', icon: 'fas fa-concierge-bell', route: '/services', keywords: 'services servicios sesiones carta tirada tarot' },
-  { labelKey: 'Backoffice.Products', icon: 'fas fa-box', route: '/products', keywords: 'products productos tarot curso deck' },
+  //{ labelKey: 'Backoffice.Products', icon: 'fas fa-box', route: '/products', keywords: 'products productos tarot curso deck' },
   { labelKey: 'Backoffice.Promotions', icon: 'fas fa-tags', route: '/promotions', keywords: 'promotions promociones descuento coupon' },
   { labelKey: 'Backoffice.Bookings', icon: 'fas fa-calendar-check', route: '/bookings', keywords: 'bookings reservas citas calendar' },
   { labelKey: 'Backoffice.Testimonials', icon: 'fas fa-quote-right', route: '/testimonials', keywords: 'testimonials testimonios reviews' },
   { labelKey: 'Backoffice.Settings', icon: 'fas fa-cog', route: '/settings', keywords: 'settings configuracion config setup' },
   { labelKey: 'Backoffice.ChatConfig', icon: 'fas fa-robot', route: '/chat-config', keywords: 'chat config bot ai inteligencia' },
   { labelKey: 'Backoffice.Media', icon: 'fas fa-images', route: '/media', keywords: 'media imagenes archivos upload' },
+  { labelKey: 'Backoffice.Users', icon: 'fas fa-users', route: '/users', keywords: 'users usuarios admin roles acceso login' },
 ];
 
 export default function Layout() {
@@ -23,8 +24,13 @@ export default function Layout() {
   const { user, logout } = useAuth();
   const { lang, changeLang } = useLanguage();
   const navigate = useNavigate();
+  const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [search, setSearch] = useState('');
+
+  // El drawer se cierra al cambiar de pantalla (también desde enlaces del dashboard).
+  useEffect(() => { setMobileOpen(false); }, [location.pathname]);
 
   const filtered = NAV_ITEMS.filter(item => {
     if (!search.trim()) return true;
@@ -36,13 +42,24 @@ export default function Layout() {
   const handleLogout = () => { logout(); navigate('/login'); };
 
   return (
-    <div className={`layout ${collapsed ? 'collapsed' : ''}`}>
+    <div className={`layout ${collapsed ? 'collapsed' : ''} ${mobileOpen ? 'mobile-open' : ''}`}>
+      {mobileOpen && (
+        <button
+          type="button"
+          className="sidebar-backdrop"
+          aria-label={t('Backoffice.CloseMenu')}
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
       <aside className="sidebar">
         <div className="sidebar-brand">
           {!collapsed && <h4>{t('Backoffice.AdminPanel')}</h4>}
           {collapsed && <h4>{t('Backoffice.AdminPanelShort')}</h4>}
-          <button className="btn-toggle" onClick={() => setCollapsed(!collapsed)}>
+          <button className="btn-toggle" onClick={() => setCollapsed(!collapsed)} title={collapsed ? t('Backoffice.OpenMenu') : t('Backoffice.CloseMenu')}>
             <i className={`fas ${collapsed ? 'fa-angle-right' : 'fa-angle-left'}`} />
+          </button>
+          <button className="sidebar-close" onClick={() => setMobileOpen(false)} aria-label={t('Backoffice.CloseMenu')}>
+            <i className="fas fa-times" />
           </button>
         </div>
         {!collapsed && (
@@ -67,6 +84,7 @@ export default function Layout() {
               to={item.route}
               end={item.route === '/'}
               className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+              onClick={() => setMobileOpen(false)}
             >
               <i className={item.icon} />
               {!collapsed && <span>{t(item.labelKey)}</span>}
@@ -77,6 +95,14 @@ export default function Layout() {
       <div className="main-area">
         <header className="topbar">
           <div className="topbar-title">
+            <button
+              type="button"
+              className="mobile-menu-toggle"
+              aria-label={t('Backoffice.OpenMenu')}
+              onClick={() => setMobileOpen(true)}
+            >
+              <i className="fas fa-bars" />
+            </button>
             <h5>Waleska Astral - {t('Backoffice.AdminPanel')}</h5>
           </div>
           <div className="topbar-actions">

@@ -31,7 +31,7 @@ export default function Login() {
     <div className="login-container">
       <div className="login-card">
         <div className="login-brand">
-          <i className="fas fa-star login-icon" />
+          <img src="/favicon.ico" alt="Logo" style={{ width: '100px', height: '100px' }} />
         </div>
         <h3 className="login-title">Waleska Astral</h3>
         <p className="login-subtitle">{t('Backoffice.AdminPanel')}</p>
@@ -44,7 +44,7 @@ export default function Login() {
               className="form-control"
               value={email}
               onChange={e => setEmail(e.target.value)}
-              placeholder="adminWa@wa.com"
+              placeholder="Correo electrónico"
               required
             />
           </div>

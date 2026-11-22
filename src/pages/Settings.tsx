@@ -67,6 +67,11 @@ export default function Settings() {
     }
   };
 
+  const getGroupLabel = (group: string) => {
+    if (group.toLowerCase() === 'social') return t('Backoffice.SocialLinks');
+    return group.charAt(0).toUpperCase() + group.slice(1);
+  };
+
   return (
     <div>
       <div className="page-header">
@@ -85,7 +90,7 @@ export default function Settings() {
           <div key={group} className="settings-group">
             <div className="settings-group-header">
               <i className={getGroupIcon(group)} />
-              {group.charAt(0).toUpperCase() + group.slice(1)}
+              {getGroupLabel(group)}
               <span className="settings-count">{settings.length}</span>
             </div>
             <div className="settings-group-body">

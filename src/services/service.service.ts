@@ -15,6 +15,7 @@ export interface ServiceEntity {
   tags?: string[];
   isActive: boolean;
   isFeatured: boolean;
+  showInHeader: boolean;
   categorySlug?: string;
   meta?: Record<string, unknown>;
   createdAt: string;

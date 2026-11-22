@@ -1,0 +1,272 @@
+/* Pantallas independientes de crear/editar: se adaptan a laptop, tablet y móvil. */
+.entity-form-page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-bottom: 8px;
+}
+
+.entity-form-header {
+  align-items: flex-start !important;
+}
+
+.entity-form-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.back-link {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: #9b59f5;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.back-link:hover {
+  color: #c39bff;
+}
+
+.entity-form-subtitle {
+  color: #8892b0;
+  font-size: 13px;
+  margin: 0;
+}
+
+.validation-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.entity-form-card {
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.entity-form-card-header {
+  gap: 10px;
+}
+
+.entity-form-card-header i {
+  color: #9b59f5;
+}
+
+.entity-form-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Rejilla principal del formulario: 2 columnas en laptop, 1 en tablet/móvil. */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.form-grid.cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.form-field {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-field.full {
+  grid-column: 1 / -1;
+}
+
+.form-field label {
+  color: #a8b2d1;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.form-field .form-control {
+  width: 100%;
+}
+
+.form-section {
+  border-top: 1px solid #1a1a1a;
+  padding-top: 18px;
+}
+
+.form-section-title {
+  color: #ccd6f6;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-section-title i {
+  color: #9b59f5;
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 8px 12px;
+  background: #0d0d0d;
+  border: 1px solid #1f1f1f;
+  border-radius: 8px;
+  color: #ccd6f6;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.checkbox-field input {
+  width: 16px;
+  height: 16px;
+  accent-color: #7122d0;
+  flex-shrink: 0;
+}
+
+/* Filas repetibles (botones, párrafos, enlaces, redes). */
+.repeat-row {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 8px;
+  align-items: end;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: #0d0d0d;
+  border: 1px solid #1a1a1a;
+  border-radius: 8px;
+}
+
+.repeat-row .form-field {
+  gap: 4px;
+}
+
+.span-2 { grid-column: span 2; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-6 { grid-column: span 6; }
+.span-12 { grid-column: span 12; }
+
+.repeat-row .btn-remove {
+  justify-self: end;
+  min-width: 38px;
+  justify-content: center;
+}
+
+.star-rating {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  min-height: 38px;
+}
+
+.star-rating button {
+  background: transparent;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.star-rating i {
+  font-size: 20px;
+}
+
+.form-actions-sticky {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  margin: 0;
+  padding: 16px 20px;
+  background: #0d0d0d;
+  border-top: 1px solid #1a1a1a;
+  flex-wrap: wrap;
+}
+
+.form-actions-sticky .btn {
+  min-width: 130px;
+  justify-content: center;
+}
+
+/* Tablet: el sidebar come espacio, así que las rejillas se simplifican. */
+@media (max-width: 1180px) {
+  .form-grid.cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .checkbox-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 980px) {
+  .entity-form-page {
+    max-width: none;
+  }
+
+  .form-grid,
+  .form-grid.cols-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .checkbox-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .repeat-row {
+    grid-template-columns: 1fr;
+  }
+
+  .repeat-row > * {
+    grid-column: 1 / -1 !important;
+    width: 100%;
+  }
+
+  .repeat-row .btn-remove {
+    justify-self: start;
+    width: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .entity-form-card-body {
+    gap: 14px;
+    padding: 14px;
+  }
+
+  .entity-form-card-header {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .form-actions-sticky {
+    padding: 12px 14px;
+  }
+
+  .form-actions-sticky .btn {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .page-header h4 {
+    font-size: 18px;
+  }
+}

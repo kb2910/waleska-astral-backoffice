@@ -42,7 +42,7 @@ export default function Dashboard() {
 
   const actions = [
     { label: t('Backoffice.EditContent'), icon: 'fas fa-file-alt', route: '/content', color: 'primary' },
-    { label: t('Backoffice.AddService'), icon: 'fas fa-plus', route: '/services', color: 'success' },
+    { label: t('Backoffice.AddService'), icon: 'fas fa-plus', route: '/services/new', color: 'success' },
     { label: t('Backoffice.ViewBookings'), icon: 'fas fa-calendar', route: '/bookings', color: 'warning' },
     { label: t('Backoffice.UploadMedia'), icon: 'fas fa-upload', route: '/media', color: 'info' },
   ];
